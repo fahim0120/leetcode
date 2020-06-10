@@ -29,3 +29,40 @@ class Solution:
 
         N = len(nums)
         return [helper(nums, i) for i in range(2**N, 2**(N+1))]
+
+        '''
+        Backtracking
+        nums = [1, 2, 3], result = [], curr_subset = []
+            nums = [2, 3], result = [[]], curr_subset = [1]
+                nums = [3], result = [[], [1]], curr_subset = [1, 2]
+                    nums = [], result = [[], [1], [1, 2]], curr_subset = [1, 2, 3]
+                        result = [[], [1], [1, 2], [1, 2, 3]]
+                nums = [], result = [[], [1], [1, 2], [1, 2, 3]], curr_subset = [1, 3]
+                    result = [[], [1], [1, 2], [1, 2, 3], [1, 3]]
+            nums = [3], result = [[], [1], [1, 2], [1, 2, 3], [1, 3]], curr_subset = [2]
+                nums = [], result = [[], [1], [1, 2], [1, 2, 3], [1, 3], [2]], curr_subset = [2, 3]
+                    result = [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3]]
+            nums = [], result = [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3]], curr_subset = [3]
+                result = [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
+        '''
+        def backtrack(nums, result, curr_subset):
+            result.append(curr_subset)
+            for i, num in enumerate(nums):
+                backtrack(nums[i+1:], result, curr_subset + [num])
+
+        result = []
+        backtrack(nums, result, [])
+        return result
+
+        '''
+        Backtracking, passing the starting index only
+        '''
+        def backtrack(nums, result, curr_subset, start):
+            result.append(curr_subset)
+
+            for i, num in enumerate(nums[start:], start=start):
+                backtrack(nums, result, curr_subset + [num], i+1)
+
+        result = []
+        backtrack(nums, result, [], 0)
+        return result
